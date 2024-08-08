@@ -1,5 +1,9 @@
 # Notification Service 
-This is .NET 8 application all dependencies are managed with the use of NuGet: 
+This is .NET 8 application all dependencies are managed with the use of NuGet.
+The service is capable of receiving data to be send either for email channel or sms channel or both at the same time. It supports two different providers in case one is unavailable during the request. 
+If both providers are unavailable there is a retry mechanism implemented with the use of Polly. 
+
+
 
 ### Steps to launch
   1. Clone repository and open VS 2022 or similar IDE 
@@ -31,3 +35,4 @@ This is .NET 8 application all dependencies are managed with the use of NuGet:
 }
 ```
   4. Launch solution and test using swagger or other method
+
