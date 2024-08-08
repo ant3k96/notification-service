@@ -51,9 +51,7 @@ namespace Notification.Api.UnitTests
             _channelOptions.Enabled = false;
             var request = new SendMessageRequest
             {
-                From = "test",
-                Email = "test",
-                PhoneNumber = "test1",
+                Email = new EmailSpecification { From = "test", To = "test1" },
                 Body = "test2"
             };
 
@@ -77,9 +75,7 @@ namespace Notification.Api.UnitTests
             // Arrange
             var request = new SendMessageRequest
             {
-                From = "test",
-                Email = "test",
-                PhoneNumber = "test1",
+                Email = new EmailSpecification { From = "test", To = "test1" },
                 Body = "test2"
             };
             var notification = new NotificationEmail();
@@ -101,9 +97,7 @@ namespace Notification.Api.UnitTests
             // Arrange
             var request = new SendMessageRequest
             {
-                From = "test",
-                Email = "test",
-                PhoneNumber = "test1",
+                Email = new EmailSpecification { From = "test", To = "test1" },
                 Body = "test2"
             };
             var notification = new NotificationEmail();
@@ -139,9 +133,7 @@ namespace Notification.Api.UnitTests
             // Arrange
             var request = new SendMessageRequest
             {
-                From = "test",
-                Email = "test",
-                PhoneNumber = "test1",
+                Email = new EmailSpecification { From = "test", To = "test1" },
                 Body = "test2"
             };
             var notification = new NotificationEmail();
@@ -163,9 +155,7 @@ namespace Notification.Api.UnitTests
             // Arrange
             var request = new SendMessageRequest
             {
-                From = "test",
-                Email = "",
-                PhoneNumber = "test1",
+                Email = new EmailSpecification { From = "", To = "test1" },
                 Body = "test2"
             };
 
