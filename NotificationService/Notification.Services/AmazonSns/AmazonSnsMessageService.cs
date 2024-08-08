@@ -18,6 +18,9 @@ namespace Notification.Services.AmazonSns
         }
         public override async Task SendEmailAsync(NotificationEmail notification)
         {
+            //Implementation of AmazonSnsClient for sending Email
+
+            //Random exception to simulate failures
             if (new Random().Next(2) == 0)
             {
                 throw new Exception("Error while connecting to server");
@@ -27,6 +30,8 @@ namespace Notification.Services.AmazonSns
 
         public override async Task SendSmsAsync(NotificationSms notification)
         {
+            //Implementation of AmazonSnsClient for sending Sms
+
             _logger.LogInformation("AmazonSns Sms send");
         }
     }

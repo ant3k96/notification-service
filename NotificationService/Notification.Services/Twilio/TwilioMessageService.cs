@@ -20,6 +20,9 @@ namespace Notification.Services.Twilio
 
         public override async Task SendEmailAsync(NotificationEmail notification)
         {
+            //implementation of Twilio client for sending Email
+
+            //Random exception to simulate failures
             if (new Random().Next(2) == 0)
             {
                 throw new Exception("Error while connecting to server");
@@ -30,6 +33,8 @@ namespace Notification.Services.Twilio
 
         public override async Task SendSmsAsync(NotificationSms notification)
         {
+            //implementation of Twilio client for sending SMS
+
             _logger.LogInformation("Twilio Sms Send");
         }
     }
