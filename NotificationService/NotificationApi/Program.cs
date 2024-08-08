@@ -1,4 +1,6 @@
 using MediatR;
+using Microsoft.AspNetCore.Diagnostics;
+using Notification.Api.Controllers.ErrorResponse;
 using NotificationApi.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler(c => c.Run(async httpContext =>
+{
+    var exception = httpContext
+        .Features
+        .Get<IExceptionHandlerPathFeature>()
+        ?.Error;
+
+    await httpContext.Response.WriteAsJsonAsync(new HttpErrorResponse()
+    {
+        ErrorMessage = exception?.Message
+                       ?? "Request failed without an exception, see logs for more information"
+    });
+}));
 
 app.UseHttpsRedirection();
 
