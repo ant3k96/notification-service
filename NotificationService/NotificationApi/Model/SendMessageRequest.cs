@@ -8,8 +8,11 @@ namespace Notification.Api.Model
         [JsonPropertyName("from")]
         public required string From { get; init; }
 
-        [JsonPropertyName("to")]
-        public required string To { get; init; }
+        [JsonPropertyName("phoneNumber")]
+        public string PhoneNumber { get; init; } = default!;
+
+        [JsonPropertyName("email")]
+        public string Email { get; init; } = default!;
 
         [JsonPropertyName("body")]
         public required string Body { get; init; }

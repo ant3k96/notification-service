@@ -1,6 +1,8 @@
 ﻿using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Notification.Api.Exceptions;
 using Notification.Api.Model;
 using Notification.Api.Options;
 using Notification.Domain.Notifications;
@@ -25,7 +27,12 @@ namespace Notification.Api.Controllers.Hanlders
         {
             if (_channelOptions.Enabled)
             {
-                var notification = _mapper.Map<NotificationMessage>(request);
+                if (request.PhoneNumber.IsNullOrEmpty())
+                {
+                    throw new InvalidMessageDataException("Email address cannot be null");
+                }
+
+                var notification = _mapper.Map<NotificationSms>(request);
 
                 Type type;
 
@@ -47,7 +54,7 @@ namespace Notification.Api.Controllers.Hanlders
                     }
                     if (callCount == callMaxCount)
                     {
-                        throw new Exception("No service available at the moment");
+                        throw new ServiceUnavailableException("No service available at the moment");
                     }
                     break;
                 }

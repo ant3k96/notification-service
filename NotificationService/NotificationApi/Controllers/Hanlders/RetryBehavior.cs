@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Notification.Api.Exceptions;
 using Polly;
 using Polly.Retry;
 
@@ -14,7 +15,7 @@ namespace Notification.Api.Controllers.Hanlders
         {
             // Define a retry policy with Polly
             _retryPolicy = Policy
-                .Handle<Exception>()
+                .Handle<ServiceUnavailableException>()
                 .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(retryAttempt));
             _inner = inner;
         }
