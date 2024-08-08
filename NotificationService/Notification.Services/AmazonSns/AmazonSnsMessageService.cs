@@ -16,7 +16,7 @@ namespace Notification.Services.AmazonSns
             base.Priority = _options.Priority;
             _logger = logger;
         }
-        public override async Task SendEmailAsync(NotificationMessage notification)
+        public override async Task SendEmailAsync(NotificationEmail notification)
         {
             if (new Random().Next(2) == 0)
             {
@@ -25,12 +25,7 @@ namespace Notification.Services.AmazonSns
             _logger.LogInformation("AmazonSns Email send");
         }
 
-        public override async Task SendPushAsync(NotificationMessage notification)
-        {
-            _logger.LogInformation("AmazonSns Sms send");
-        }
-
-        public override async Task SendSmsAsync(NotificationMessage notification)
+        public override async Task SendSmsAsync(NotificationSms notification)
         {
             _logger.LogInformation("AmazonSns Sms send");
         }

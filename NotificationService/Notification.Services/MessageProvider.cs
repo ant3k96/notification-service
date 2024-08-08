@@ -10,8 +10,7 @@ namespace Notification.Services
         {
             return Priority;
         }
-        public abstract Task SendSmsAsync(NotificationMessage notification);
-        public abstract Task SendEmailAsync(NotificationMessage notification);
-        public abstract Task SendPushAsync(NotificationMessage notification);
+        public abstract Task SendSmsAsync(NotificationSms notification);
+        public abstract Task SendEmailAsync(NotificationEmail notification);
     }
 }

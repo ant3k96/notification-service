@@ -18,7 +18,7 @@ namespace Notification.Services.Twilio
         }
 
 
-        public override async Task SendEmailAsync(NotificationMessage notification)
+        public override async Task SendEmailAsync(NotificationEmail notification)
         {
             if (new Random().Next(2) == 0)
             {
@@ -28,12 +28,7 @@ namespace Notification.Services.Twilio
 
         }
 
-        public override async Task SendPushAsync(NotificationMessage notification)
-        {
-            _logger.LogInformation("Twilio Sms Send");
-        }
-
-        public override async Task SendSmsAsync(NotificationMessage notification)
+        public override async Task SendSmsAsync(NotificationSms notification)
         {
             _logger.LogInformation("Twilio Sms Send");
         }
