@@ -27,7 +27,7 @@ namespace Notification.Api.Controllers.Hanlders
         {
             if (_channelOptions.Enabled)
             {
-                if (request.PhoneNumber.IsNullOrEmpty())
+                if (request.Phone.From.IsNullOrEmpty() || request.Phone.To.IsNullOrEmpty())
                 {
                     throw new InvalidMessageDataException("Email address cannot be null");
                 }

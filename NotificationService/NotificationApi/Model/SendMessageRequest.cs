@@ -5,17 +5,38 @@ namespace Notification.Api.Model
 {
     public class SendMessageRequest : INotification
     {
-        [JsonPropertyName("from")]
-        public required string From { get; init; }
-
-        [JsonPropertyName("phoneNumber")]
-        public string PhoneNumber { get; init; } = default!;
+        [JsonPropertyName("phone")]
+        public PhoneSpecification Phone { get; init; } = default!;
 
         [JsonPropertyName("email")]
-        public string Email { get; init; } = default!;
+        public EmailSpecification Email { get; init; } = default!;
 
         [JsonPropertyName("body")]
         public required string Body { get; init; }
 
     }
+
+    public class EmailSpecification
+    {
+        [JsonPropertyName("emailTo")]
+        public string To { get; init; } = default!;
+
+        [JsonPropertyName("emailFrom")]
+        public string From { get; init; } = default!;
+
+        [JsonPropertyName("subject")]
+        public string Subject { get; init; } = default!;
+
+    }
+
+    public class PhoneSpecification
+    {
+        [JsonPropertyName("to")]
+        public string To { get; init; } = default!;
+
+        [JsonPropertyName("from")]
+        public string From { get; init; } = default!;
+
+    }
+
 }

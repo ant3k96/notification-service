@@ -12,14 +12,14 @@ namespace Notification.Api.Controllers.Hanlders
 {
     public class EmailNotificationHandler : INotificationHandler<SendMessageRequest>
     {
-        private readonly IEnumerable<IMessageProvider> _messagePublishers;
+        private readonly IEnumerable<IMessageProvider> _messageProviders;
         private readonly IMapper _mapper;
         private readonly EmailChannelOptions _channelOptions;
         private readonly ILogger<EmailNotificationHandler> _logger;
-        public EmailNotificationHandler(IEnumerable<IMessageProvider> messagePublishers, IMapper mapper, IOptions<EmailChannelOptions> options
+        public EmailNotificationHandler(IEnumerable<IMessageProvider> messageProviders, IMapper mapper, IOptions<EmailChannelOptions> options
             , ILogger<EmailNotificationHandler> logger)
         {
-            _messagePublishers = messagePublishers;
+            _messageProviders = messageProviders;
             _mapper = mapper;
             _channelOptions = options.Value;
             _logger = logger;
@@ -28,7 +28,7 @@ namespace Notification.Api.Controllers.Hanlders
         {
             if (_channelOptions.Enabled)
             {
-                if (request.Email.IsNullOrEmpty())
+                if (request.Email.From.IsNullOrEmpty() || request.Email.To.IsNullOrEmpty())
                 {
                     throw new InvalidMessageDataException("Email address cannot be null");
                 }
@@ -36,10 +36,10 @@ namespace Notification.Api.Controllers.Hanlders
 
                 Type type;
 
-                _messagePublishers.OrderBy(x => x.GetPriority());
-                int callMaxCount = _messagePublishers.Count();
+                _messageProviders.OrderBy(x => x.GetPriority());
+                int callMaxCount = _messageProviders.Count();
                 int callCount = 0;
-                foreach (var messagePublisher in _messagePublishers)
+                foreach (var messagePublisher in _messageProviders)
                 {
                     type = messagePublisher.GetType();
                     try
