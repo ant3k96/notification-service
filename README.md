@@ -36,7 +36,7 @@ The **Notification Microservice** is a .NET 8-based application designed to hand
 
 ```sh
 git clone https://github.com/ant3k96/notification-service.git
-cd notification-microservice
+cd notification-service
 ```
 
 ### Configuration
