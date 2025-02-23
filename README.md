@@ -151,10 +151,5 @@ if (amazonSnsEmailOptions.Enabled)
 if (twilioSmsOptions.Enabled)
     services.AddSingleton<ISmsProvider, TwilioSmsMockService>();
 ```
-
-## License
-
-MIT License. See `LICENSE` for details.
-
 ---
 
