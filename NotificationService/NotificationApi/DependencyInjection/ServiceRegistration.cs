@@ -1,8 +1,11 @@
-﻿using MediatR;
-using Notification.Api.Controllers.Hanlders;
+﻿using FluentValidation;
+using MediatR;
+using Notification.Api.Controllers.Handlers;
+using Notification.Api.Controllers.Validation;
+using Notification.Api.Model;
 using Notification.Api.Options;
-using Notification.Services;
 using Notification.Services.AmazonSns;
+using Notification.Services.Interfaces;
 using Notification.Services.Options;
 using Notification.Services.Twilio;
 using Scrutor;
@@ -13,21 +16,27 @@ namespace NotificationApi.DependencyInjection
     {
         public static IServiceCollection AddNotificationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            var amazonSnsOptions = GetOptions<AmazonSnsMessageServiceOptions>(services, configuration, AmazonSnsMessageServiceOptions.SectionName);
-            var twilioOptions = GetOptions<TwilioMessageServiceOptions>(services, configuration, TwilioMessageServiceOptions.SectionName);
+            var amazonSnsEmailOptions = GetOptions<AmazonSnsEmailServiceOptions>(services, configuration, AmazonSnsEmailServiceOptions.SectionName);
+            var amazonSnsSmsOptions = GetOptions<AmazonSnsSmsServiceOptions>(services, configuration, AmazonSnsSmsServiceOptions.SectionName);
+
+            var twilioSmsOptions = GetOptions<TwilioSmsServiceOptions>(services, configuration, TwilioSmsServiceOptions.SectionName);
+            var twilioEmailOptions = GetOptions<TwilioSendGridEmailOptions>(services, configuration, TwilioSendGridEmailOptions.SectionName);
 
             _ = GetOptions<EmailChannelOptions>(services, configuration, EmailChannelOptions.SectionName);
             _ = GetOptions<SmsChannelOptions>(services, configuration, SmsChannelOptions.SectionName);
 
 
-            if (amazonSnsOptions.Enabled)
-            {
-                services.AddSingleton<IMessageProvider, AmazonSnsMessageService>();
-            }
-            if (twilioOptions.Enabled)
-            {
-                services.AddSingleton<IMessageProvider, TwilioMessageService>();
-            }
+            if (amazonSnsEmailOptions.Enabled)
+                services.AddSingleton<IEmailProvider, AmazonSnsEmailMockService>();
+
+            if (amazonSnsSmsOptions.Enabled)
+                services.AddSingleton<ISmsProvider, AmazonSnsSmsMockService>();
+
+            if (twilioSmsOptions.Enabled)
+                services.AddSingleton<ISmsProvider, TwilioSmsMockService>();
+
+            if (twilioEmailOptions.Enabled)
+                services.AddSingleton<IEmailProvider, TwilioSendGridEmailMockService>();
 
             services.Scan(scan =>
             {
@@ -36,6 +45,8 @@ namespace NotificationApi.DependencyInjection
             });
 
             services.Decorate(typeof(INotificationHandler<>), typeof(RetryDecorator<>));
+
+            services.AddScoped<IValidator<SendMessageRequest>, MessageRequestValidator>();
 
             services.AddMappingServices();
 

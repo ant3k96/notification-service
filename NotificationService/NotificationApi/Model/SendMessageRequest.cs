@@ -5,8 +5,8 @@ namespace Notification.Api.Model
 {
     public class SendMessageRequest : INotification
     {
-        [JsonPropertyName("phone")]
-        public PhoneSpecification Phone { get; init; } = default!;
+        [JsonPropertyName("sms")]
+        public PhoneSpecification Sms { get; init; } = default!;
 
         [JsonPropertyName("email")]
         public EmailSpecification Email { get; init; } = default!;

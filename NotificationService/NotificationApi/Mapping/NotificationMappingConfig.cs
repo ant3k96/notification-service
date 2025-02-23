@@ -9,8 +9,8 @@ namespace Notification.Api.Mapping
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<SendMessageRequest, NotificationSms>()
-                .Map(dest => dest.Sender, src => src.Phone.From)
-                .Map(dest => dest.Receiver, src => src.Phone.To)
+                .Map(dest => dest.Sender, src => src.Sms.From)
+                .Map(dest => dest.Receiver, src => src.Sms.To)
                 .Map(dest => dest.MessageBody, src => src.Body);
 
             config.NewConfig<SendMessageRequest, NotificationEmail>()

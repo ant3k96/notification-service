@@ -2,19 +2,19 @@ using MapsterMapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using Notification.Api.Controllers.Hanlders;
+using Notification.Api.Controllers.Handlers;
 using Notification.Api.Exceptions;
 using Notification.Api.Model;
 using Notification.Api.Options;
 using Notification.Domain.Notifications;
-using Notification.Services;
+using Notification.Services.Interfaces;
 
 namespace Notification.Api.UnitTests
 {
     public class EmailNotificationHandlerTests
     {
-        private readonly Mock<IMessageProvider> _mockMessageProvider1;
-        private readonly Mock<IMessageProvider> _mockMessageProvider2;
+        private readonly Mock<IEmailProvider> _mockMessageProvider1;
+        private readonly Mock<IEmailProvider> _mockMessageProvider2;
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<IOptions<EmailChannelOptions>> _mockOptions;
         private readonly Mock<ILogger<EmailNotificationHandler>> _mockLogger;
@@ -23,9 +23,9 @@ namespace Notification.Api.UnitTests
 
         public EmailNotificationHandlerTests()
         {
-            _mockMessageProvider1 = new Mock<IMessageProvider>();
-            _mockMessageProvider2 = new Mock<IMessageProvider>();
-            var messageProviders = new List<IMessageProvider>
+            _mockMessageProvider1 = new Mock<IEmailProvider>();
+            _mockMessageProvider2 = new Mock<IEmailProvider>();
+            var messageProviders = new List<IEmailProvider>
             {
             _mockMessageProvider1.Object,
             _mockMessageProvider2.Object
