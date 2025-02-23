@@ -6,19 +6,19 @@ using Notification.Api.Exceptions;
 using Notification.Api.Model;
 using Notification.Api.Options;
 using Notification.Domain.Notifications;
-using Notification.Services;
+using Notification.Services.Interfaces;
 
-namespace Notification.Api.Controllers.Hanlders
+namespace Notification.Api.Controllers.Handlers
 {
     public class SmsNotificationHandler : INotificationHandler<SendMessageRequest>
     {
-        private readonly IEnumerable<IMessageProvider> _messagePublishers;
+        private readonly IEnumerable<ISmsProvider> _smsProviders;
         private readonly IMapper _mapper;
         private readonly SmsChannelOptions _channelOptions;
         private readonly ILogger<SmsNotificationHandler> _logger;
-        public SmsNotificationHandler(IEnumerable<IMessageProvider> messagePublishers, IMapper mapper, IOptions<SmsChannelOptions> options, ILogger<SmsNotificationHandler> logger)
+        public SmsNotificationHandler(IEnumerable<ISmsProvider> smsProviders, IMapper mapper, IOptions<SmsChannelOptions> options, ILogger<SmsNotificationHandler> logger)
         {
-            _messagePublishers = messagePublishers;
+            _smsProviders = smsProviders;
             _mapper = mapper;
             _channelOptions = options.Value;
             _logger = logger;
@@ -27,7 +27,7 @@ namespace Notification.Api.Controllers.Hanlders
         {
             if (_channelOptions.Enabled)
             {
-                if (request.Phone.From.IsNullOrEmpty() || request.Phone.To.IsNullOrEmpty())
+                if (request.Sms.From.IsNullOrEmpty() || request.Sms.To.IsNullOrEmpty())
                 {
                     throw new InvalidMessageDataException("Email address cannot be null");
                 }
@@ -36,15 +36,14 @@ namespace Notification.Api.Controllers.Hanlders
 
                 Type type;
 
-                _messagePublishers.OrderBy(x => x.GetPriority());
-                int callMaxCount = _messagePublishers.Count();
+                int callMaxCount = _smsProviders.Count();
                 int callCount = 0;
-                foreach (var messagePublisher in _messagePublishers)
+                foreach (var provider in _smsProviders.OrderBy(x => x.GetPriority()))
                 {
-                    type = messagePublisher.GetType();
+                    type = provider.GetType();
                     try
                     {
-                        await messagePublisher.SendSmsAsync(notification);
+                        await provider.SendSmsAsync(notification);
                     }
                     catch (Exception ex)
                     {

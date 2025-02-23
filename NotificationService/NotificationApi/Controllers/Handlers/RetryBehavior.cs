@@ -3,7 +3,7 @@ using Notification.Api.Exceptions;
 using Polly;
 using Polly.Retry;
 
-namespace Notification.Api.Controllers.Hanlders
+namespace Notification.Api.Controllers.Handlers
 {
     public class RetryDecorator<TNotification> : INotificationHandler<TNotification>
         where TNotification : INotification
@@ -13,7 +13,6 @@ namespace Notification.Api.Controllers.Hanlders
 
         public RetryDecorator(INotificationHandler<TNotification> inner)
         {
-            // Define a retry policy with Polly
             _retryPolicy = Policy
                 .Handle<ServiceUnavailableException>()
                 .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(retryAttempt));

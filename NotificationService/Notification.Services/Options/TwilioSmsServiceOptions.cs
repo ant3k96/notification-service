@@ -1,8 +1,8 @@
 ﻿namespace Notification.Services.Options
 {
-    public class AmazonSnsMessageServiceOptions
+    public class TwilioSmsServiceOptions
     {
-        public const string SectionName = "AmazonSns";
+        public const string SectionName = "TwillioSms";
 
         public bool Enabled { get; set; }
         public int Priority { get; set; }

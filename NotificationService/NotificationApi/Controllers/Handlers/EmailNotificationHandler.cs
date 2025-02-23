@@ -6,20 +6,20 @@ using Notification.Api.Exceptions;
 using Notification.Api.Model;
 using Notification.Api.Options;
 using Notification.Domain.Notifications;
-using Notification.Services;
+using Notification.Services.Interfaces;
 
-namespace Notification.Api.Controllers.Hanlders
+namespace Notification.Api.Controllers.Handlers
 {
     public class EmailNotificationHandler : INotificationHandler<SendMessageRequest>
     {
-        private readonly IEnumerable<IMessageProvider> _messageProviders;
+        private readonly IEnumerable<IEmailProvider> _emailProviders;
         private readonly IMapper _mapper;
         private readonly EmailChannelOptions _channelOptions;
         private readonly ILogger<EmailNotificationHandler> _logger;
-        public EmailNotificationHandler(IEnumerable<IMessageProvider> messageProviders, IMapper mapper, IOptions<EmailChannelOptions> options
+        public EmailNotificationHandler(IEnumerable<IEmailProvider> emailProviders, IMapper mapper, IOptions<EmailChannelOptions> options
             , ILogger<EmailNotificationHandler> logger)
         {
-            _messageProviders = messageProviders;
+            _emailProviders = emailProviders;
             _mapper = mapper;
             _channelOptions = options.Value;
             _logger = logger;
@@ -36,10 +36,9 @@ namespace Notification.Api.Controllers.Hanlders
 
                 Type type;
 
-                _messageProviders.OrderBy(x => x.GetPriority());
-                int callMaxCount = _messageProviders.Count();
+                int callMaxCount = _emailProviders.Count();
                 int callCount = 0;
-                foreach (var messagePublisher in _messageProviders)
+                foreach (var messagePublisher in _emailProviders.OrderBy(e => e.GetPriority()))
                 {
                     type = messagePublisher.GetType();
                     try
