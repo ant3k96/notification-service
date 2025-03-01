@@ -12,17 +12,17 @@ The **Notification Microservice** is a .NET 8-based application designed to hand
   - SMS: Twilio, Amazon SNS (mocked services)
 - **MediatR for Message Handling**
 - **Polly for Retry Mechanism**
-- **REST API Endpoint** to send notifications
-- **Swagger UI** for API exploration and testing
+- **REST API Endpoint** 
+- **Swagger UI** 
 
 ## Tech Stack
 
 - **.NET 8**
-- **MediatR** (CQRS pattern)
-- **Polly** (Resilience & retry mechanism)
-- **FluentValidation** (Request validation)
-- **Swagger (NSwag)** (API documentation)
-- **Dependency Injection** (Built-in .NET DI container)
+- **MediatR** 
+- **Polly** 
+- **FluentValidation** 
+- **Swagger (NSwag)**
+- **Dependency Injection**
 
 ## Installation & Setup
 
@@ -133,23 +133,5 @@ This allows you to test the notification API endpoints.
 
 200 OK or Error message
 
-## Architecture
-
-### **MediatR and Polly Implementation**
-
-- `INotificationHandler<SendMessageRequest>` is used to handle message processing.
-- The Polly decorator (`RetryDecorator<T>`) ensures retry logic is applied to failed notification requests.
-
-### **Service Registration**
-
-Services are conditionally registered based on configuration settings:
-
-```csharp
-if (amazonSnsEmailOptions.Enabled)
-    services.AddSingleton<IEmailProvider, AmazonSnsEmailMockService>();
-
-if (twilioSmsOptions.Enabled)
-    services.AddSingleton<ISmsProvider, TwilioSmsMockService>();
-```
 ---
 
